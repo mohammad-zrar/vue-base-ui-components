@@ -1,14 +1,27 @@
 <template>
+  <div v-if="classObjec.dropBack" class="backdrop" @click="toggle"></div>
   <nav :class="{ changeNavHieght: classObjec.changeNavHieght }">
     <div class="navbar">
       <div class="nav-brand">
-        <h1>Base UI</h1>
+        <h1><router-link :to="{ name: 'home' }">Base UI</router-link></h1>
       </div>
 
       <ul class="nav-menu" :class="{ collapsed: classObjec.collapsed }">
-        <li class="nav-item"><a href="#">Buttons</a></li>
-        <li class="nav-item"><a href="#">Base Dialog</a></li>
-        <li class="nav-item"><a href="#">Login</a></li>
+        <li class="nav-item">
+          <router-link @click="toggle" :to="{ name: 'buttons' }"
+            >Buttons</router-link
+          >
+        </li>
+        <li class="nav-item">
+          <router-link @click="toggle" :to="{ name: 'dialog' }"
+            >Base Dialog</router-link
+          >
+        </li>
+        <li class="nav-item">
+          <router-link @click="toggle" :to="{ name: 'auth' }"
+            >Login</router-link
+          >
+        </li>
       </ul>
     </div>
     <button @click="toggle" class="nav-toggler">
@@ -26,21 +39,40 @@ import { reactive, computed } from "vue";
 const classObjec = reactive({
   collapsed: false,
   changeNavHieght: false,
+  dropBack: false,
 });
 function toggle() {
-  classObjec.collapsed = !classObjec.collapsed;
-  classObjec.changeNavHieght = !classObjec.changeNavHieght;
+  if (window.matchMedia("(max-width: 768px)").matches) {
+    classObjec.changeNavHieght = !classObjec.changeNavHieght;
+    classObjec.dropBack = !classObjec.dropBack;
+    classObjec.collapsed = !classObjec.collapsed;
+  }
 }
+const dropShow = computed(() => classObjec.dropBack);
 </script>
 
 <style scoped>
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.25);
+  z-index: 9;
+}
 nav {
   background-color: #334257;
   padding: 1rem 5rem;
-  display: block;
+  display: grid;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.75);
   height: 1.9rem;
   transition: height 0.25s ease;
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  z-index: 10;
 }
 .navbar {
   display: flex;
@@ -48,8 +80,9 @@ nav {
   white-space: nowrap;
 }
 
-.nav-brand {
+.nav-brand a {
   color: #fff;
+  text-decoration: none;
 }
 
 .nav-toggler {
@@ -78,12 +111,16 @@ nav {
 .nav-item a {
   text-decoration: none;
   color: #fff;
-  transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease;
   padding: 0.15rem;
+  border-bottom: 2px solid #334257;
 }
-.nav-item a:hover,
-.nav-item a:active {
-  border-bottom: 2px #fff solid;
+.nav-item a:hover {
+  font-weight: bold;
+}
+.nav-item a:active,
+.nav-item a.router-link-active {
+  border-color: #fff;
 }
 @media screen and (max-width: 768px) {
   nav {
@@ -98,8 +135,6 @@ nav {
   }
   .nav-menu {
     display: none;
-    position: relative;
-    bottom: 0.9rem;
   }
 
   .navbar {
@@ -109,7 +144,8 @@ nav {
     margin: 0 0 0.2rem;
   }
   .changeNavHieght {
-    height: 10rem;
+    height: 8rem;
+    padding-bottom: 1rem;
   }
   .collapsed {
     display: grid;
