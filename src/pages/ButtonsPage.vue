@@ -3,8 +3,12 @@
 
   <base-card>
     <div class="buttons">
-      <base-button link :to="{ name: 'home' }">Link</base-button>
-      <base-button>Button</base-button>
+      <div>
+        <base-button link :to="{ name: 'home' }">Link</base-button>
+      </div>
+      <div>
+        <base-button>Button</base-button>
+      </div>
     </div>
   </base-card>
 </template>

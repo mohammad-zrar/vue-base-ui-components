@@ -28,7 +28,7 @@ button,
 a {
   padding: 0.6rem 0.8rem;
   border-radius: 7.5px;
-
+  display: inline-block;
   outline: none;
   cursor: pointer;
   border: none;
