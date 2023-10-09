@@ -1,25 +1,37 @@
 <template>
-  <div class="backdrop" @click="emits('close')"></div>
-  <dialog open>
-    <header>
-      <slot name="header"> <h2>Title</h2></slot>
-    </header>
-    <hr />
-    <section>
-      <slot name="body"></slot>
-    </section>
-    <hr />
-    <menu>
-      <slot name="actions">
-        <base-button color="red" @click="emits('close')">Close</base-button>
-      </slot>
-    </menu>
-  </dialog>
+  <teleport to="body">
+    <div class="backdrop" v-show="show" @click="emits('close')"></div>
+    <Transition>
+      <dialog open v-show="show">
+        <header>
+          <slot name="header"> <h2>Title</h2></slot>
+        </header>
+        <hr />
+        <section>
+          <slot name="body"></slot>
+        </section>
+        <hr />
+        <menu>
+          <slot name="actions">
+            <base-button color="red" @click="emits('close')">Close</base-button>
+          </slot>
+        </menu>
+      </dialog>
+    </Transition>
+  </teleport>
 </template>
 
 <script setup>
 import BaseButton from "./BaseButton.vue";
 import { ref } from "vue";
+
+const props = defineProps({
+  show: {
+    type: Boolean,
+    required: true,
+  },
+});
+
 const emits = defineEmits(["close"]);
 </script>
 
@@ -40,7 +52,7 @@ dialog {
   margin: 0 auto;
   padding: 1rem 1rem 0.5rem;
   width: 45%;
-  border: 1px solid #999;
+  border: none;
   border-radius: 20px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
   z-index: 16;
@@ -53,5 +65,18 @@ dialog menu {
   justify-content: end;
   align-items: center;
   padding: 0.6rem 0.3rem 0 0;
+}
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.5s ease;
+}
+
+.v-enter-from {
+  opacity: 0;
+  transform: translateY(-64px);
+}
+.v-leave-to {
+  opacity: 0;
+  transform: translateY(64px);
 }
 </style>

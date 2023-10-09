@@ -5,7 +5,8 @@
       <base-button @click="openDialog">Try Dialog </base-button>
     </div>
   </base-card>
-  <base-dialog v-if="showDialog" @close="closeDialog">
+
+  <base-dialog :show="showDialog" @close="closeDialog">
     <template #header>
       <h2>Testing Dialog</h2>
     </template>
