@@ -1,6 +1,6 @@
 <template>
-  <button v-if="!link" class="primary"><slot></slot></button>
-  <router-link v-else class="primary" :to="to"><slot></slot></router-link>
+  <button v-if="!link" :class="color"><slot></slot></button>
+  <router-link v-else :class="color" :to="to"><slot></slot></router-link>
 </template>
 
 <script setup>
@@ -14,6 +14,11 @@ defineProps({
     type: Object,
     required: false,
     default: { name: "home" },
+  },
+  color: {
+    type: String,
+    required: false,
+    default: "blue",
   },
 });
 </script>
@@ -32,12 +37,19 @@ a {
   text-decoration: none;
   text-align: center;
 }
-.primary {
+.blue {
   background-color: #0d6efd;
   color: #fff;
 }
-.primary:hover,
+.blue:hover,
 primary:active {
   background-color: #0b62e5;
+}
+.red {
+  background-color: #dc3545;
+  color: #fff;
+}
+.red:hover {
+  background-color: #c72333;
 }
 </style>
